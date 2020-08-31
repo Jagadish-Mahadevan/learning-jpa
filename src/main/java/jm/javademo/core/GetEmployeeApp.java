@@ -2,21 +2,29 @@ package jm.javademo.core;
 
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ConfigurableApplicationContext;
 
-import jm.javademo.core.dao.EmployeeRepository;
 import jm.javademo.core.entity.Employee;
+import jm.javademo.core.service.EmployeeService;
 
 @SpringBootApplication
-public class GetEmployeeApp {
+public class GetEmployeeApp implements CommandLineRunner {
+	
+	@Autowired
+	private EmployeeService service;
 	
 	public static void main(String[] args) {
-		ConfigurableApplicationContext context = SpringApplication.run(GetEmployeeApp.class, args);
-		EmployeeRepository repository = context.getBean(EmployeeRepository.class);
-		Optional<Employee> emp = repository.findById(1L);
+		SpringApplication.run(GetEmployeeApp.class);
+	}
+
+	@Override
+	public void run(String... args) throws Exception {
+		Optional<Employee> emp = service.getEmployee(6L);
 		emp.ifPresent(System.out::println);
+		
 	}
 
 }
